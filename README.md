@@ -2,10 +2,15 @@
 I-Banking App User Interface
 
 ##Installation & Usages
+
 git clone https://github.com/saiful-dev/I-Banking-App.git
+
 cd I-Banking-App
+
 npm install/npm run
+
 **Sample User/pin:** si/1111
+
 **sample user/pin:** sa/2222
 
 
