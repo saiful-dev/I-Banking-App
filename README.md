@@ -1,7 +1,10 @@
 # I-Banking-App
-I-Banking App User Interface
 
-##Installation & Usages
+## Technology used: 
+
+### Modern Js, HTML5 and CSS
+
+## Installation & Usages
 
 git clone https://github.com/saiful-dev/I-Banking-App.git
 
@@ -13,6 +16,6 @@ npm install/npm run
 
 **sample user/pin:** sa/2222
 
-
+## I-Banking App User Interface
 
 ![I-Banking User Interface](https://user-images.githubusercontent.com/43130235/126081767-095e0cbd-7c91-4caf-a93a-44085b73cde1.png)
