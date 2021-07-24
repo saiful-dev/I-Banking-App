@@ -64,6 +64,7 @@ const inputClosePin = document.querySelector('.form__input--pin');
 //display Movements
 
 let sorted =false; // for sorting movements
+let timer;
 
 const ControlMovements=function(movements,sort=false){
   containerMovements.innerHTML=''; // for remove the date test of html 
@@ -88,9 +89,8 @@ const ControlMovements=function(movements,sort=false){
 // current Balance calculation part\
 
 const displaybanlance=function(account){
-    account.balance=account.movements.reduce((acc=0,value) => acc+value);
+    account.balance=account.movements.reduce((acc,value) => acc+value,0);
     labelBalance.textContent=`${account.balance}€`;
-
 
 };
 
@@ -127,7 +127,60 @@ const UpdateUI=function(CurrentAcc){
 
     //display summary
     displaySummary(CurrentAcc);
+
+
 };
+//display time
+const currentTime=function(){
+//Experiment Internationaliztion time API
+  const now=new Date();
+  const Options={
+    hour:'numeric',
+    minute:'2-digit',
+    day:'numeric',
+    month: 'long',
+    year: 'numeric',
+   
+
+  };
+  const locale=navigator.language;
+  const time=new Intl.DateTimeFormat(locale,Options).format(now);
+  labelDate.textContent=`${time}`;
+};
+
+//display Logout
+const startLogOutTimer=function(){
+  let time=60; //sample timer 60 seconds
+  const tick=function(){
+    const min=String(Math.trunc(time/60)).padStart(2,0)
+    const sec=String(time %60).padStart(2,0);
+    // In each call, print the remaining time to UI
+    labelTimer.textContent=`${min}:${sec}`;
+    // when 0 stop timer and logOUT User
+    if(time === 0){
+      clearInterval(timer);
+    
+      labelWelcome.textContent = 'Log in to get started ';
+     
+      containerApp.style.opacity = 0;
+    }
+    //decrease by 1
+    time--;
+  };
+
+  //call the timer every second
+tick();
+const timer=setInterval(tick, 1000); 
+
+return timer;
+
+};
+
+
+
+
+
+
 
 
 
@@ -173,9 +226,17 @@ btnLogin.addEventListener('click',function(e){ //e means events arguments
       labelWelcome.textContent=`Welcome, ${currentAccount.owner.split(' ')[0]}`;
       containerApp.style.opacity=100;
 
+      
       //clean input fields
       inputLoginUsername.value=inputLoginPin.value='';
       //inputLoginPin.blur(); //The blur() method is used to remove focus from an element.
+
+    currentTime(); //set current time
+    //logOut Timer
+  
+    if(timer) clearInterval(timer)  
+      
+    timer=startLogOutTimer();
 
     UpdateUI(currentAccount);
   }
@@ -201,6 +262,10 @@ btnTransfer.addEventListener('click',function(e){
       receiver.movements.push(ammount);
       currentAccount.movements.push(-ammount);
       console.log(receiver);
+      //Reset timer 
+      clearInterval(timer);
+      timer=startLogOutTimer();
+
       UpdateUI(currentAccount);
     }
     else{
@@ -217,6 +282,10 @@ btnLoan.addEventListener('click',function(e){
   {
 
     currentAccount.movements.push(loanAmmount);
+    //Reset timer 
+    clearInterval(timer);
+    timer=startLogOutTimer();
+    //update UI
     UpdateUI(currentAccount);
 
   }
